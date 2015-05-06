@@ -89,13 +89,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AiWeiBang.SearchEngine.ApiClient\8_AiWeiBang.SearchEngine.ApiClient.csproj">
+    <ProjectReference Include="..\AiWeiBang.SearchEngine.ApiClient\4_AiWeiBang.SearchEngine.ApiClient.csproj">
       <Project>{1dc3b12a-46e2-4a1f-a0db-5d1a83aecec2}</Project>
-      <Name>8_AiWeiBang.SearchEngine.ApiClient</Name>
+      <Name>4_AiWeiBang.SearchEngine.ApiClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AiWeiBang.SearchEngine.Contract\5_AiWeiBang.SearchEngine.Contract.csproj">
+    <ProjectReference Include="..\AiWeiBang.SearchEngine.Contract\3_AiWeiBang.SearchEngine.Contract.csproj">
       <Project>{4da7ee54-e3a5-40a3-a343-20a210460ccc}</Project>
-      <Name>5_AiWeiBang.SearchEngine.Contract</Name>
+      <Name>3_AiWeiBang.SearchEngine.Contract</Name>
     </ProjectReference>
     <ProjectReference Include="..\AiWeiBang.SearchEngine.Data\2_AiWeiBang.SearchEngine.Data.csproj">
       <Project>{fabd2e8d-3a6f-4ecd-bdc5-dc37676136b3}</Project>
