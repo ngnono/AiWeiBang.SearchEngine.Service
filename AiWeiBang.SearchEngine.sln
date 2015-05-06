@@ -1,0 +1,84 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3_AiWeiBang.SearchEngine.Jobs", "AiWeiBang.SearchEngine.Jobs\3_AiWeiBang.SearchEngine.Jobs.csproj", "{8059EC72-D303-4E70-9595-FED49494E0E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "7_AiWeiBang.SearchEngine.Demo", "AiWeiBang.SearchEngine.Demo\7_AiWeiBang.SearchEngine.Demo.csproj", "{97A4508A-CA1C-4FE6-8D42-C6562738541E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1_AiWeiBang.SearchEngine", "AiWeiBang.SearchEngine\1_AiWeiBang.SearchEngine.csproj", "{C7B931C0-CAF8-41A4-AD52-DD4525FF7592}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2_AiWeiBang.SearchEngine.Data", "AiWeiBang.SearchEngine.Data\2_AiWeiBang.SearchEngine.Data.csproj", "{FABD2E8D-3A6F-4ECD-BDC5-DC37676136B3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5B3F9FBA-5D26-4F1C-87C4-046E47CC78D4}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4_AiWeiBang.SearchEngine.Jobs.Cores", "AiWeiBang.SearchEngine.Jobs.Cores\4_AiWeiBang.SearchEngine.Jobs.Cores.csproj", "{DA4A8504-61F0-4FD5-B77A-159260CAD544}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{2C54C806-6624-4D4F-B610-1A4C5318D229}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".git", ".git", "{C4CEED27-04DB-481A-B987-E6FFA31D2BD8}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "6_AiWeiBang.SearchEngine.Test", "AiWeiBang.SearchEngine.Test\6_AiWeiBang.SearchEngine.Test.csproj", "{91356189-F313-44E4-996D-C56BB4E57C25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5_AiWeiBang.SearchEngine.Contract", "AiWeiBang.SearchEngine.Contract\5_AiWeiBang.SearchEngine.Contract.csproj", "{4DA7EE54-E3A5-40A3-A343-20A210460CCC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jobs", "jobs", "{25C4C701-2330-4CFF-A0EE-7DD4AEB1D65B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "8_AiWeiBang.SearchEngine.ApiClient", "AiWeiBang.SearchEngine.ApiClient\8_AiWeiBang.SearchEngine.ApiClient.csproj", "{1DC3B12A-46E2-4A1F-A0DB-5D1A83AECEC2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8059EC72-D303-4E70-9595-FED49494E0E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8059EC72-D303-4E70-9595-FED49494E0E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8059EC72-D303-4E70-9595-FED49494E0E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8059EC72-D303-4E70-9595-FED49494E0E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97A4508A-CA1C-4FE6-8D42-C6562738541E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97A4508A-CA1C-4FE6-8D42-C6562738541E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97A4508A-CA1C-4FE6-8D42-C6562738541E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97A4508A-CA1C-4FE6-8D42-C6562738541E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7B931C0-CAF8-41A4-AD52-DD4525FF7592}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7B931C0-CAF8-41A4-AD52-DD4525FF7592}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7B931C0-CAF8-41A4-AD52-DD4525FF7592}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7B931C0-CAF8-41A4-AD52-DD4525FF7592}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FABD2E8D-3A6F-4ECD-BDC5-DC37676136B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FABD2E8D-3A6F-4ECD-BDC5-DC37676136B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FABD2E8D-3A6F-4ECD-BDC5-DC37676136B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FABD2E8D-3A6F-4ECD-BDC5-DC37676136B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA4A8504-61F0-4FD5-B77A-159260CAD544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA4A8504-61F0-4FD5-B77A-159260CAD544}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA4A8504-61F0-4FD5-B77A-159260CAD544}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA4A8504-61F0-4FD5-B77A-159260CAD544}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91356189-F313-44E4-996D-C56BB4E57C25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91356189-F313-44E4-996D-C56BB4E57C25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91356189-F313-44E4-996D-C56BB4E57C25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91356189-F313-44E4-996D-C56BB4E57C25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DA7EE54-E3A5-40A3-A343-20A210460CCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DA7EE54-E3A5-40A3-A343-20A210460CCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DA7EE54-E3A5-40A3-A343-20A210460CCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DA7EE54-E3A5-40A3-A343-20A210460CCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DC3B12A-46E2-4A1F-A0DB-5D1A83AECEC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DC3B12A-46E2-4A1F-A0DB-5D1A83AECEC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DC3B12A-46E2-4A1F-A0DB-5D1A83AECEC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DC3B12A-46E2-4A1F-A0DB-5D1A83AECEC2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DA4A8504-61F0-4FD5-B77A-159260CAD544} = {25C4C701-2330-4CFF-A0EE-7DD4AEB1D65B}
+		{8059EC72-D303-4E70-9595-FED49494E0E5} = {25C4C701-2330-4CFF-A0EE-7DD4AEB1D65B}
+		{97A4508A-CA1C-4FE6-8D42-C6562738541E} = {2C54C806-6624-4D4F-B610-1A4C5318D229}
+	EndGlobalSection
+EndGlobal

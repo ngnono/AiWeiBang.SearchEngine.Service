@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FABD2E8D-3A6F-4ECD-BDC5-DC37676136B3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AiWeiBang.SearchEngine.Data</RootNamespace>
+    <AssemblyName>AiWeiBang.SearchEngine.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\AccountFansStatu.cs" />
+    <Compile Include="Models\AccountFeed.cs" />
+    <Compile Include="Models\AccountManager.cs" />
+    <Compile Include="Models\AccountScene.cs" />
+    <Compile Include="Models\AccountUserSetting.cs" />
+    <Compile Include="Models\AccountValidateCode.cs" />
+    <Compile Include="Models\Article.cs" />
+    <Compile Include="Models\Article_Bak.cs" />
+    <Compile Include="Models\Article_Content.cs" />
+    <Compile Include="Models\Article_Ext.cs" />
+    <Compile Include="Models\Article_Keyword.cs" />
+    <Compile Include="Models\Article_Num.cs" />
+    <Compile Include="Models\Article_Pop.cs" />
+    <Compile Include="Models\Article_PopBlack.cs" />
+    <Compile Include="Models\Article_Recommend.cs" />
+    <Compile Include="Models\Article_Tag.cs" />
+    <Compile Include="Models\Article_Temp.cs" />
+    <Compile Include="Models\CrawlClient.cs" />
+    <Compile Include="Models\CrawlMap.cs" />
+    <Compile Include="Models\CrawlTime.cs" />
+    <Compile Include="Models\CrawlUrl.cs" />
+    <Compile Include="Models\CredentialMail.cs" />
+    <Compile Include="Models\CredentialWeibo.cs" />
+    <Compile Include="Models\DevKeyword.cs" />
+    <Compile Include="Models\DevMenu.cs" />
+    <Compile Include="Models\DevReceiveLog.cs" />
+    <Compile Include="Models\DevSetting.cs" />
+    <Compile Include="Models\DevToken.cs" />
+    <Compile Include="Models\FavArticle.cs" />
+    <Compile Include="Models\ImageMap.cs" />
+    <Compile Include="Models\Log_AccountOperate.cs" />
+    <Compile Include="Models\Log_Upload.cs" />
+    <Compile Include="Models\Mapping\AccountFansStatuMap.cs" />
+    <Compile Include="Models\Mapping\AccountFeedMap.cs" />
+    <Compile Include="Models\Mapping\AccountManagerMap.cs" />
+    <Compile Include="Models\Mapping\AccountMap.cs" />
+    <Compile Include="Models\Mapping\AccountSceneMap.cs" />
+    <Compile Include="Models\Mapping\AccountUserSettingMap.cs" />
+    <Compile Include="Models\Mapping\AccountValidateCodeMap.cs" />
+    <Compile Include="Models\Mapping\ArticleMap.cs" />
+    <Compile Include="Models\Mapping\Article_BakMap.cs" />
+    <Compile Include="Models\Mapping\Article_ContentMap.cs" />
+    <Compile Include="Models\Mapping\Article_ExtMap.cs" />
+    <Compile Include="Models\Mapping\Article_KeywordMap.cs" />
+    <Compile Include="Models\Mapping\Article_NumMap.cs" />
+    <Compile Include="Models\Mapping\Article_PopBlackMap.cs" />
+    <Compile Include="Models\Mapping\Article_PopMap.cs" />
+    <Compile Include="Models\Mapping\Article_RecommendMap.cs" />
+    <Compile Include="Models\Mapping\Article_TagMap.cs" />
+    <Compile Include="Models\Mapping\Article_TempMap.cs" />
+    <Compile Include="Models\Mapping\CrawlClientMap.cs" />
+    <Compile Include="Models\Mapping\CrawlMapMap.cs" />
+    <Compile Include="Models\Mapping\CrawlTimeMap.cs" />
+    <Compile Include="Models\Mapping\CrawlUrlMap.cs" />
+    <Compile Include="Models\Mapping\CredentialMailMap.cs" />
+    <Compile Include="Models\Mapping\CredentialWeiboMap.cs" />
+    <Compile Include="Models\Mapping\DevKeywordMap.cs" />
+    <Compile Include="Models\Mapping\DevMenuMap.cs" />
+    <Compile Include="Models\Mapping\DevReceiveLogMap.cs" />
+    <Compile Include="Models\Mapping\DevSettingMap.cs" />
+    <Compile Include="Models\Mapping\DevTokenMap.cs" />
+    <Compile Include="Models\Mapping\FavArticleMap.cs" />
+    <Compile Include="Models\Mapping\ImageMapMap.cs" />
+    <Compile Include="Models\Mapping\Log_AccountOperateMap.cs" />
+    <Compile Include="Models\Mapping\Log_UploadMap.cs" />
+    <Compile Include="Models\Mapping\MsChannelMap.cs" />
+    <Compile Include="Models\Mapping\MsColumnArticleMap.cs" />
+    <Compile Include="Models\Mapping\MsColumnMap.cs" />
+    <Compile Include="Models\Mapping\MsSettingMap.cs" />
+    <Compile Include="Models\Mapping\RecommendListClassMap.cs" />
+    <Compile Include="Models\Mapping\RecommendListDetailMap.cs" />
+    <Compile Include="Models\Mapping\RecommendListMap.cs" />
+    <Compile Include="Models\Mapping\RecommendListSeryMap.cs" />
+    <Compile Include="Models\Mapping\RecommendList_IndexMap.cs" />
+    <Compile Include="Models\Mapping\SubscribeUserMap.cs" />
+    <Compile Include="Models\Mapping\todelete_AccountCommitMap.cs" />
+    <Compile Include="Models\Mapping\UnionMap.cs" />
+    <Compile Include="Models\Mapping\VerifyCodeMap.cs" />
+    <Compile Include="Models\Mapping\WebAppSettingMap.cs" />
+    <Compile Include="Models\Mapping\WebApp_ElementsMap.cs" />
+    <Compile Include="Models\Mapping\WebApp_SlidesMap.cs" />
+    <Compile Include="Models\Mapping\WebApp_TagsMap.cs" />
+    <Compile Include="Models\Mapping\WxUserBindMap.cs" />
+    <Compile Include="Models\Mapping\WxUserExtMap.cs" />
+    <Compile Include="Models\Mapping\WxUserManageMap.cs" />
+    <Compile Include="Models\Mapping\WxUserRecommendMap.cs" />
+    <Compile Include="Models\MsChannel.cs" />
+    <Compile Include="Models\MsColumn.cs" />
+    <Compile Include="Models\MsColumnArticle.cs" />
+    <Compile Include="Models\MsSetting.cs" />
+    <Compile Include="Models\RecommendList.cs" />
+    <Compile Include="Models\RecommendListClass.cs" />
+    <Compile Include="Models\RecommendListDetail.cs" />
+    <Compile Include="Models\RecommendListSery.cs" />
+    <Compile Include="Models\RecommendList_Index.cs" />
+    <Compile Include="Models\SubscribeUser.cs" />
+    <Compile Include="Models\todelete_AccountCommit.cs" />
+    <Compile Include="Models\Union.cs" />
+    <Compile Include="Models\VerifyCode.cs" />
+    <Compile Include="Models\WebAppSetting.cs" />
+    <Compile Include="Models\WebApp_Elements.cs" />
+    <Compile Include="Models\WebApp_Slides.cs" />
+    <Compile Include="Models\WebApp_Tags.cs" />
+    <Compile Include="Models\WechatMsgContext.cs" />
+    <Compile Include="Models\WechatMsg_Content01Context.cs" />
+    <Compile Include="Models\WeiBangAccountContext.cs" />
+    <Compile Include="Models\WxUserBind.cs" />
+    <Compile Include="Models\WxUserExt.cs" />
+    <Compile Include="Models\WxUserManage.cs" />
+    <Compile Include="Models\WxUserRecommend.cs" />
+    <Compile Include="Partial\WechatMsgContent01Context.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
