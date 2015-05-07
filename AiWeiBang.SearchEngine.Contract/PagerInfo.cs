@@ -41,15 +41,34 @@ namespace AiWeiBang.SearchEngine.Contract
         #region properties
 
         /// <summary>
-        /// 索引
+        /// 索引 
+        /// index = form/size+1
         /// </summary>
         [JsonIgnore]
-        public int Index { get; set; }
+        public int Index
+        {
+            get
+            {
+                if (Size <= 0 || From == 0)
+                {
+                    return 1;
+                }
+
+                return (From / Size) + 1;
+            }
+            set { }
+        }
+
+        /// <summary>
+        /// from = (page-1)*size
+        /// </summary>
+        [JsonProperty(PropertyName = "from")]
+        public int From { get; set; }
 
         /// <summary>
         /// 大小
         /// </summary>
-        [JsonIgnore]
+        [JsonProperty(PropertyName = "size")]
         public int Size { get; set; }
 
         /// <summary>

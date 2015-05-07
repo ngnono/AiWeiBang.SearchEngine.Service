@@ -116,6 +116,7 @@ namespace AiWeiBang.SearchEngine.ApiClient
         public static TResult Post<T, TResult>(string url, T data)
         {
             HttpResponseMessage response = Client.PostAsJsonAsync(url, data).Result;
+            Log.Debug(response);
             _curStatuscode = (int)response.StatusCode;
             return response.VerificationResponse() ? response.Content.ReadAsAsync<TResult>().Result : default(TResult);
         }
