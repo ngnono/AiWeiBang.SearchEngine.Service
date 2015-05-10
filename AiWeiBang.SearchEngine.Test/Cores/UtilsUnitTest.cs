@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework;
 using System;
 
 namespace AiWeiBang.SearchEngine.Test.Cores
@@ -45,6 +47,19 @@ namespace AiWeiBang.SearchEngine.Test.Cores
         {
             var actual = Utils.GetArticleContentDbTable(id, 100);
             const string expected = "[WechatMsg_Content21].[dbo].[Article_Content]";
+            Assert.AreEqual(actual, expected, String.Format("actual:{0},equal expected:{1}", actual, expected));
+        }
+
+        [Test]
+        public void Tt()
+        {
+            var articleIds = new List<int>()
+            {
+                1039747
+            };
+            var actual = Utils.GetArticleContentDbConnectionStringName(articleIds).FirstOrDefault();
+
+            var expected = "WechatMsg_Content02Context";
             Assert.AreEqual(actual, expected, String.Format("actual:{0},equal expected:{1}", actual, expected));
         }
     }

@@ -265,9 +265,27 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
 
                     var datas = q.ToDictionary(v => v.ArticleID, v => v);
 
+                    //如何有相同的 KEY，那么记录一个LOG
+                    //后面的KEY 覆盖前面的
                     foreach (var key in datas.Keys)
                     {
-                        result.Add(key, datas[key]);
+                        if (result.Keys.Contains(key))
+                        {
+                            Log.Fatal(String.Format("索引文章content存在相同的 articleId{0}",key));
+                            //覆盖旧的
+                            var d = datas[key];
+                            if (!String.IsNullOrWhiteSpace(d.Content))
+                            {
+                                //kong 不做处理
+                                result[key] = d;
+                            }
+
+                        }
+                        else
+                        {
+                            result.Add(key, datas[key]);
+                        }
+                        
                     }
                 }
             }
