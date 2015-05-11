@@ -47,6 +47,11 @@
         public const string SortOrderAsc = "asc";
 
         public const string SortOrderDesc = "desc";
+
+        /// <summary>
+        /// 得分
+        /// </summary>
+        public const string Score = "_score";
     }
 
     public struct SortType

@@ -76,5 +76,15 @@ namespace AiWeiBang.SearchEngine.Contract
         /// </summary>
         [JsonProperty(PropertyName = "exclude_fields", NullValueHandling = NullValueHandling.Ignore)]
         public List<string> ExcludeFields { get; set; }
+
+        /// <summary>
+        /// 是否对KeyWord高亮 默认为不高亮，如果需要高亮 请设为true
+        /// 默认会给关键字分词后的词 加上 &lt;em&gt;词&lt;/em&gt;
+        /// 请增加em该标签的 style
+        /// 默认对 title content进行高亮
+        /// content高亮后 会替换掉Summary 字段
+        /// </summary>
+        [JsonProperty(PropertyName = "highlight", NullValueHandling = NullValueHandling.Ignore)]
+        public bool? Highlight { get; set; }
     }
 }

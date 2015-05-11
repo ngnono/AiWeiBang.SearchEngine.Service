@@ -489,5 +489,99 @@ namespace AiWeiBang.SearchEngine.Test.Contract
             Assert.IsNotNull(actual.Data.Datas, "返回数据.datas不能为空");
 
         }
+
+
+        /// <summary>
+        /// 关键字 高亮查询
+        /// 注意 当有关键字时 排序字段可不设，默认会使用最相近的词（得分高的排在前面）
+        /// 如果需要自定义排序 建议 使用 FieldName = ContantFields.Score,Params = SortType.Desc 作为第一排序 这样得分高的会排在最前面
+        /// </summary>
+        [Test]
+        public void Search4KeywordHL([Values("英雄", "土豪", null)]string keyWord, [Values(100)]int size, [Range(1, 20, 1)]int page)
+        {
+            //起始位置
+            var from = (page - 1) * size;
+            var query = new Query
+            {
+                From = from,
+                Size = size,
+                Sort = new List<Sort>()
+            };
+
+            /*
+             * -----------------------------------------------------------------------
+             *会按照 这个的顺序 排序
+             *类似于SQL order by  postdate desc,posttime desc
+             *default asc
+            */
+            query.Sort.Add(new Sort
+            {
+                FieldName = ContantFields.Score,
+                Params = SortType.Desc
+            });
+
+            query.Sort.Add(new Sort
+            {
+                FieldName = ContantFields.PostDate,
+                Params = SortType.Desc
+            });
+
+            query.Sort.Add(new Sort
+            {
+                FieldName = ContantFields.PostTime,
+                Params = SortType.Desc
+            });
+
+            /*------------------QUERY--------------------------------
+             * 相当于 条件查询 必须的
+             * 类似于 SQL    where postUserId = postuserId.value
+             * ----------------------------------------------------
+             */
+
+            /*************************
+             *关键字查询 高亮
+             ************************
+             */
+            if (!String.IsNullOrWhiteSpace(keyWord))
+            {
+                query.KeyWord = keyWord;
+            }
+
+            query.Highlight = true;
+
+            query.Must = new Must();
+
+            query.Must.Terms = new Dictionary<string, object>();
+
+            /***************************
+             * 
+             * 排除字段
+             * 
+             **************************** 
+             */
+
+            //不返回 content字段
+            //×××××××××××××××××××××××××××××××××××××××××××××××××
+            //记得加入这个排除 会增加性能
+            //需要content 时 再加入
+            //××××××××××××××××××××××××××××××××××××××××××××××××××
+            query.ExcludeFields = new List<string>
+                {
+                    ContantFields.Content
+                };
+
+            var actual = RestClient.Post<Query, Result<PagerInfo<ArticleModel>>>(_search, query);
+
+            Assert.IsNotNull(actual, "返回值不能为空");
+            Assert.IsTrue(actual.Status, "返回状态必须为TRUE");
+            Assert.IsNotNull(actual.Data, "返回数据不能为空");
+            Assert.True(actual.Data.TotalCount >= 0, "返回数据大于零");
+            Assert.IsNotNull(actual.Data.Datas, "返回数据.datas不能为空");
+
+
+
+        }
+    
+    
     }
 }
