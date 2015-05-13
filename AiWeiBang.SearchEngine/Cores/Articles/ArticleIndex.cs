@@ -612,7 +612,14 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
                 {
                     var maxId = rst.Max(v => v.ArticleID);
 
-                    filter = GetFilterByLastArticleId(maxId, max);
+                    if (maxId >= max)
+                    {
+                        run = false;
+                    }
+                    else
+                    {
+                        filter = GetFilterByLastArticleId(maxId, max);
+                    }
                 }
             }
 
