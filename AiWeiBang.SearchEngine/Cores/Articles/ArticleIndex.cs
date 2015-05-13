@@ -38,13 +38,13 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
                 //范围查询
                 if (filter.PostDateRange != null)
                 {
-                    if (filter.PostDateRange.Rte != null)
+                    if (filter.PostDateRange.Gte != null)
                     {
-                        query = query.And(v => v.PostDate >= filter.PostDateRange.Rte);
+                        query = query.And(v => v.PostDate >= filter.PostDateRange.Gte);
                     }
-                    else if (filter.PostDateRange.Rt != null)
+                    else if (filter.PostDateRange.Gt != null)
                     {
-                        query = query.And(v => v.PostDate > filter.PostDateRange.Rt);
+                        query = query.And(v => v.PostDate > filter.PostDateRange.Gt);
                     }
 
                     if (filter.PostDateRange.Lte != null)
@@ -60,13 +60,13 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
                 //范围查询
                 if (filter.RecordDateRange != null)
                 {
-                    if (filter.RecordDateRange.Rte != null)
+                    if (filter.RecordDateRange.Gte != null)
                     {
-                        query = query.And(v => v.RecordTime >= filter.RecordDateRange.Rte);
+                        query = query.And(v => v.RecordTime >= filter.RecordDateRange.Gte);
                     }
-                    else if (filter.RecordDateRange.Rt != null)
+                    else if (filter.RecordDateRange.Gt != null)
                     {
-                        query = query.And(v => v.RecordTime > filter.RecordDateRange.Rt);
+                        query = query.And(v => v.RecordTime > filter.RecordDateRange.Gt);
                     }
 
                     if (filter.RecordDateRange.Lte != null)
@@ -82,13 +82,13 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
                 //范围查询
                 if (filter.ArticleIdRange != null)
                 {
-                    if (filter.ArticleIdRange.Rte != null)
+                    if (filter.ArticleIdRange.Gte != null)
                     {
-                        query = query.And(v => v.ArticleID >= filter.ArticleIdRange.Rte);
+                        query = query.And(v => v.ArticleID >= filter.ArticleIdRange.Gte);
                     }
-                    else if (filter.ArticleIdRange.Rt != null)
+                    else if (filter.ArticleIdRange.Gt != null)
                     {
-                        query = query.And(v => v.ArticleID > filter.ArticleIdRange.Rt);
+                        query = query.And(v => v.ArticleID > filter.ArticleIdRange.Gt);
                     }
 
                     if (filter.ArticleIdRange.Lte != null)
@@ -115,13 +115,13 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
                 //范围查询
                 if (filter.RangeArticleId != null)
                 {
-                    if (filter.RangeArticleId.Rte != null)
+                    if (filter.RangeArticleId.Gte != null)
                     {
-                        query = query.And(v => v.ArticleID >= filter.RangeArticleId.Rte);
+                        query = query.And(v => v.ArticleID >= filter.RangeArticleId.Gte);
                     }
-                    else if (filter.RangeArticleId.Rt != null)
+                    else if (filter.RangeArticleId.Gt != null)
                     {
-                        query = query.And(v => v.ArticleID > filter.RangeArticleId.Rt);
+                        query = query.And(v => v.ArticleID > filter.RangeArticleId.Gt);
                     }
 
                     if (filter.RangeArticleId.Lte != null)
@@ -205,6 +205,61 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
         }
 
         /// <summary>
+        /// 获取文章
+        /// </summary>
+        public List<ArticleModel> GetListArticles(ArticleFilter filter)
+        {
+            var articlesFilter = Filter(filter);
+            List<ArticleModel> articleResult;
+            var indexStartDateTime = DateTime.Now;
+            Log.Debug(String.Format("getArticles.start.dt{0}", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")));
+
+            #region read db
+
+            using (var db = new WechatMsgContext())
+            {
+                var articles = db.Articles;
+                var articlesNums = db.Article_Num;
+
+                var q = from article in articles.AsExpandable().Where(articlesFilter)
+                        join articlesNum in articlesNums on article.ArticleID equals articlesNum.ArticleID into leftTmp1
+                        from nums in leftTmp1.DefaultIfEmpty()
+
+                        select new
+                        {
+                            article,
+                            nums
+                        };
+
+                //var totalCount = q.Count();
+
+                //TODO: 写死了排序方式
+                var datas = q.OrderBy(v => v.article.ArticleID).Skip(filter.SkipCount).Take(filter.PageSize).ToList();
+
+                articleResult = new List<ArticleModel>(filter.PageSize);
+
+                foreach (var data in datas)
+                {
+                    var d = AutoMapper.Mapper.Map<Article, ArticleModel>(data.article);
+                    if (data.nums != null)
+                    {
+                        d.NumUpdateTime = data.nums.UpdateTime;
+                        d.LikNum = data.nums.LikNum;
+                        d.ReadNum = data.nums.ReadNum;
+                    }
+                    d.LastIndexDateTime = indexStartDateTime;
+
+                    articleResult.Add(d);
+                }
+            }
+
+            #endregion
+
+            Log.Debug(String.Format("getArticles.end.dt{0}", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")));
+            return articleResult;
+        }
+
+        /// <summary>
         /// 获取 COLUMN
         /// </summary>
         /// <param name="filter"></param>
@@ -271,7 +326,7 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
                     {
                         if (result.Keys.Contains(key))
                         {
-                            Log.Fatal(String.Format("索引文章content存在相同的 articleId{0}",key));
+                            Log.Fatal(String.Format("索引文章content存在相同的 articleId{0}", key));
                             //覆盖旧的
                             var d = datas[key];
                             if (!String.IsNullOrWhiteSpace(d.Content))
@@ -285,7 +340,7 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
                         {
                             result.Add(key, datas[key]);
                         }
-                        
+
                     }
                 }
             }
@@ -314,7 +369,7 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
                 RangeArticleId = new SqlRange<int?>
                 {
                     Lte = maxId,
-                    Rte = minId
+                    Gte = minId
                 }
             });
 
@@ -373,9 +428,87 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
         }
 
         /// <summary>
+        /// 全量RUN 直到 PAGE 跑完
+        /// </summary>
+        /// <param name="filter"></param>
+        private ArticleFilter RunTask(ArticleFilter filter)
+        {
+            var f = filter;
+
+            var isRun = true;
+            while (isRun)
+            {
+                var articles = RunOnce(f);
+
+                if (articles.HasNextPage)
+                {
+                    //执行完毕
+                    isRun = false;
+                }
+                else
+                {
+                    f.PageIndex += 1;
+                }
+            }
+
+            return f;
+        }
+
+        /// <summary>
+        /// 只跑一次，由上层决定是否循环
+        /// </summary>
+        /// <param name="filter"></param>
+        private List<ArticleModel> RunTaskOnce(ArticleFilter filter)
+        { //文章
+            Log.Debug(String.Format("RunOnce.filter:{0}", filter));
+            var articles = GetListArticles(filter);
+            Log.Info(String.Format("geted articles.count:{0}", articles.Count));
+
+            var articleIds = articles.Select(v => v.ArticleID).ToList();
+            var minId = articleIds.Min(v => v);
+            var maxId = articleIds.Max(v => v);
+
+            Log.Info(String.Format("article id in {0}~{1}.", minId.ToString(CultureInfo.InvariantCulture), maxId.ToString(CultureInfo.InvariantCulture)));
+            //自定义组
+            var coloums = GetColumnList(new ArticleColumnFilter
+            {
+                RangeArticleId = new SqlRange<int?>
+                {
+                    Lte = maxId,
+                    Gte = minId
+                }
+            });
+
+            //content
+            Log.Info(String.Format("get contents by min:{0}~ max:{1}", minId.ToString(CultureInfo.InvariantCulture), maxId.ToString(CultureInfo.InvariantCulture)));
+            var contents = GetArticleContent(articleIds, minId, maxId);
+
+            //save
+            Log.Info(String.Format("get contents count:{0}", contents.Count.ToString(CultureInfo.InvariantCulture)));
+
+            foreach (var article in articles)
+            {
+                Article_Content articleContent;
+                if (contents.TryGetValue(article.ArticleID, out articleContent))
+                {
+                    article.Content = articleContent.Content;
+                }
+            }
+            Log.Info(String.Format("save articles.count:{0}.begin", articles.Count.ToString(CultureInfo.InvariantCulture)));
+
+            _articleStorageIndex.Save(articles);
+            Log.Info(String.Format("save articles.coloums.count:{0}", coloums.Count.ToString(CultureInfo.InvariantCulture)));
+
+            _articleStorageIndex.Save(coloums);
+            Log.Info("save ok.");
+
+            return articles;
+        }
+
+        /// <summary>
         /// 全量
         /// </summary>
-        public void FullBuild()
+        public void FullBuild(IDictionary<string, object> args)
         {
             var pagerRequest = new ArticleFilter(0, _intervalCount);
 
@@ -430,6 +563,91 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
         }
 
         /// <summary>
+        /// 任务 执行到底
+        /// </summary>
+        /// <param name="args"></param>
+        public void TaskIncrementBuild(IDictionary<string, object> args)
+        {
+            ArticleFilter filter;
+            int? min = null, max = null;
+            if (args == null)
+            {
+                //根据 ARTICID run
+                
+                filter = GetFilterByLastArticleId(null);
+            }
+            else
+            {
+                var keys = args.Keys;
+
+                if (keys.Contains("min_article_id"))
+                {
+                    min = Int32.Parse(args["min_article_id"].ToString());
+
+                    if (keys.Contains("max_article_id"))
+                    {
+                        max = Int32.Parse(args["max_article_id"].ToString());
+                    }
+
+                    filter = GetFilterByLastArticleId(min, max);
+                }
+                else
+                {
+                    Log.Info("没有指定的JOB 参数");
+                    return;
+                }
+            }
+
+            var run = true;
+            while (run)
+            {
+                var rst = RunTaskOnce(filter);
+                var count = rst.Count;
+
+                if (count == 0)
+                {
+                    run = false;
+                }
+                else
+                {
+                    var maxId = rst.Max(v => v.ArticleID);
+
+                    filter = GetFilterByLastArticleId(maxId, max);
+                }
+            }
+
+            Log.Fatal(String.Format("{0}~{1}执行完毕", min, max));
+        }
+
+        #region  methods
+
+        /// <summary>
+        ///  获取文章范围内的查询串  
+        /// </summary>
+        /// <returns></returns>
+        private ArticleFilter GetFilterByLastArticleId(int? min_articleId, int? max_articleId)
+        {
+            if (min_articleId == null && max_articleId == null)
+            {
+                throw new ArgumentNullException("min_articleId && max_articleId is null");
+            }
+
+            Log.Info(String.Format("take articleid in ({0},{1})", min_articleId, max_articleId));
+
+            var filter = new ArticleFilter(0, _intervalCount);
+
+            if (filter.ArticleIdRange == null)
+            {
+                filter.ArticleIdRange = new SqlRange<int?>();
+            }
+
+            filter.ArticleIdRange.Gt = min_articleId;
+            filter.ArticleIdRange.Lt = max_articleId;
+
+            return filter;
+        }
+
+        /// <summary>
         ///  获取最后文章ID的查询串  
         /// </summary>
         /// <param name="articleId"></param>
@@ -453,7 +671,7 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
                 filter.ArticleIdRange = new SqlRange<int?>();
             }
 
-            filter.ArticleIdRange.Rt = id;
+            filter.ArticleIdRange.Gt = id;
 
             return filter;
         }
@@ -496,5 +714,7 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
 
             return paging.Datas[0];
         }
+
+        #endregion
     }
 }

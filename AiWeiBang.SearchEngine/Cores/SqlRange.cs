@@ -19,11 +19,11 @@
         /// <summary>
         /// 大于等于
         /// </summary>
-        public T Rte { get; set; }
+        public T Gte { get; set; }
 
         /// <summary>
         /// 大于
         /// </summary>
-        public T Rt { get; set; }
+        public T Gt { get; set; }
     }
 }

@@ -15,12 +15,12 @@ namespace AiWeiBang.SearchEngine.Cores
             this._articleIndex = articleIndex;
         }
 
-        public void FullBuild()
+        public void FullBuild(IDictionary<string, object> args)
         {
             //1 整理article
             // 倒序整理 article 记录最后 articleID 每次小于这个ID抽取数据
 
-            _articleIndex.FullBuild();
+            _articleIndex.FullBuild(args);
         }
 
         public void Increment(IDictionary<string, object> args)
