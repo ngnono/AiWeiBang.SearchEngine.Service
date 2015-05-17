@@ -634,6 +634,7 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
 
             var context = model.Context.FromJson<ArticleNumDetailJobHistory>();
 
+            Log.Info(String.Format("select detailsId:{0}", context.DetailId.ToString(CultureInfo.InvariantCulture)));
             var details = GetArticleNumDetails(context);
 
             if (details == null || details.Count == 0)
@@ -641,15 +642,16 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
                 Log.Info(String.Format("上下文{0}没有找到记录", model.Context.ToJson()));
                 return;
             }
-            Log.Info(String.Format("details.num:{0}",details.Count.ToString(CultureInfo.InvariantCulture)));
+            Log.Info(String.Format("details.num:{0}", details.Count.ToString(CultureInfo.InvariantCulture)));
             var maxDetailId = details.Max(v => v.DetailID);
             Log.Info(String.Format("details.maxDetailId:{0}", maxDetailId.ToString(CultureInfo.InvariantCulture)));
-            
+
             SaveArticleNums(details);
 
             context.DetailId = maxDetailId;
             model.Context = context.ToJson();
             model.UpdateDateTime = DateTime.Now;
+            model.Id = "job_article_num_update";
 
             _articleStorageIndex.SaveJobHistoryContextModel(model);
 

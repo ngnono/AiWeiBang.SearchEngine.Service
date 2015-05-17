@@ -34,7 +34,7 @@ namespace AiWeiBang.SearchEngine.ApiClient
                 return true;
             }
 
-            var rst = response.Content.ReadAsAsync<dynamic>().Result;
+            var rst = response.Content.ReadAsStringAsync().Result;
 
             Log.Error(rst);
 

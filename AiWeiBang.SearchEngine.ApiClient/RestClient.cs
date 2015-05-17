@@ -118,7 +118,24 @@ namespace AiWeiBang.SearchEngine.ApiClient
             HttpResponseMessage response = Client.PostAsJsonAsync(url, data).Result;
             Log.Debug(response);
             _curStatuscode = (int)response.StatusCode;
-            return response.VerificationResponse() ? response.Content.ReadAsAsync<TResult>().Result : default(TResult);
+
+            TResult rst;
+            try
+            {
+                return response.VerificationResponse()
+                    ? response.Content.ReadAsAsync<TResult>().Result
+                    : default(TResult);
+            }
+            catch (Exception ex)
+            {
+                while (ex != null)
+                {
+                    Log.Error(ex);
+                    ex = ex.InnerException;
+                }
+
+                return default(TResult);
+            }
         }
 
 

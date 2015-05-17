@@ -14,8 +14,8 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
     {
         private readonly string _articleIndex = ConfigManager.ArticleApiAddress;
         private readonly string _articleColumnIndex = ConfigManager.ArticleColumnApiAddress;
-        private readonly string _articleColumnIndexBulk = String.Format("{0}bulk", ConfigManager.ArticleColumnApiAddress);
-        private readonly string _articleJobContextIndex = ConfigManager.ArticleColumnApiAddress;
+        //private readonly string _articleColumnIndexBulk = String.Format("{0}bulk", ConfigManager.ArticleColumnApiAddress);
+        private readonly string _articleJobContextIndex = ConfigManager.GetArticleJobHistoryContextApiAddress;
 
         private readonly string _search;
 
@@ -47,9 +47,9 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
                 return;
             }
 
-            Log.Debug(String.Format("save(articleColumnDtos:{0})", articleColumnDtos.ToJson()));
-            var rst = RestClient.Post<List<ArticleColumnModel>, object>(_articleColumnIndexBulk, articleColumnDtos);
-            Log.Debug(String.Format("save(articleColumnDtos.rst:{0})", rst.ToJson()));
+            Log.Info(String.Format("save(articleColumnDtos:{0})", articleColumnDtos.ToJson()));
+            var rst = RestClient.Post<List<ArticleColumnModel>, dynamic>(_articleColumnIndex, articleColumnDtos);
+            Log.Info(String.Format("save(articleColumnDtos.rst:{0})", rst));
         }
 
         public PagerInfo<ArticleModel> GetList(Query query)
@@ -77,7 +77,7 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
             var itemUrl = String.Format("{0}{1}", _articleJobContextIndex, id);
             var actual = RestClient.GetItem<Result<JobHistoryContextModel>>(itemUrl);
 
-            if (actual != null && actual.Status && actual.StatusCode == 200)
+            if (actual != null && actual.Status)
             {
                 return actual.Data;
             }
@@ -115,7 +115,7 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
                 parts = fieldValues
             };
 
-            Log.Info(String.Format("articleId:{0},parts:{1}", id.ToString(CultureInfo.InvariantCulture), fieldValues.ToJson()));
+            Log.Debug(String.Format("articleId:{0},parts:{1}", id.ToString(CultureInfo.InvariantCulture), fieldValues.ToJson()));
             var actual = RestClient.Post<dynamic, Result<dynamic>>(itemUpdatePartUrl, body);
 
             if (actual == null)
