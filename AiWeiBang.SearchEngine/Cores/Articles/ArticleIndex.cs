@@ -362,6 +362,10 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
             Log.Debug(String.Format("RunOnce.filter:{0}", filter));
             var articles = GetArticles(filter);
             Log.Info(String.Format("geted articles.count:{0}.totalCount:{1}", articles.Datas.Count, articles.TotalCount.ToString(CultureInfo.InvariantCulture)));
+            if (articles.TotalCount == 0)
+            {
+                return null;
+            }
 
             var articleIds = articles.Datas.Select(v => v.ArticleID).ToList();
             var minId = articleIds.Min(v => v);
@@ -417,37 +421,10 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
             while (isRun)
             {
                 var articles = RunOnce(f);
-
-                if (articles.HasNextPage)
+                if (articles == null || !articles.HasNextPage)
                 {
                     //执行完毕
-                    isRun = false;
-                }
-                else
-                {
-                    f.PageIndex += 1;
-                }
-            }
 
-            return f;
-        }
-
-        /// <summary>
-        /// 全量RUN 直到 PAGE 跑完
-        /// </summary>
-        /// <param name="filter"></param>
-        private ArticleFilter RunTask(ArticleFilter filter)
-        {
-            var f = filter;
-
-            var isRun = true;
-            while (isRun)
-            {
-                var articles = RunOnce(f);
-
-                if (articles.HasNextPage)
-                {
-                    //执行完毕
                     isRun = false;
                 }
                 else
@@ -664,8 +641,10 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
                 Log.Info(String.Format("上下文{0}没有找到记录", model.Context.ToJson()));
                 return;
             }
-
+            Log.Info(String.Format("details.num:{0}",details.Count.ToString(CultureInfo.InvariantCulture)));
             var maxDetailId = details.Max(v => v.DetailID);
+            Log.Info(String.Format("details.maxDetailId:{0}", maxDetailId.ToString(CultureInfo.InvariantCulture)));
+            
             SaveArticleNums(details);
 
             context.DetailId = maxDetailId;

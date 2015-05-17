@@ -400,7 +400,7 @@ namespace AiWeiBang.SearchEngine.Test.Contract
         /// 根据日期间隔，SIZE,USERID查询
         /// </summary>
         [Test]
-        public void Search4Keyword([Values("英雄", "土豪", null)]string keyWord, [Values(null, 10)]int? coloumId, [Values(100)]int size, [Range(1, 20, 1)]int page, [Values(null, 20)]int? postUserId)
+        public void Search4Keyword([Values("高级","英雄", "土豪", null)]string keyWord, [Values(null, 10)]int? coloumId, [Values(100)]int size, [Range(1, 20, 1)]int page, [Values(null, 20)]int? postUserId)
         {
             //起始位置
             var from = (page - 1) * size;
@@ -497,7 +497,7 @@ namespace AiWeiBang.SearchEngine.Test.Contract
         /// 如果需要自定义排序 建议 使用 FieldName = ContantFields.Score,Params = SortType.Desc 作为第一排序 这样得分高的会排在最前面
         /// </summary>
         [Test]
-        public void Search4KeywordHL([Values("英雄", "土豪", null)]string keyWord, [Values(100)]int size, [Range(1, 20, 1)]int page)
+        public void Search4KeywordHL([Values("高级","英雄", "土豪", null)]string keyWord, [Values(100)]int size, [Range(1, 20, 1)]int page)
         {
             //起始位置
             var from = (page - 1) * size;

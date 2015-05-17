@@ -81,6 +81,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Contract\ArticleNumTest.cs" />
     <Compile Include="Contract\CRUDArticlesColumnUnitTest.cs" />
     <Compile Include="Contract\CRUDArticlesUnitTest.cs" />
     <Compile Include="Contract\SearchUnitTest.cs" />

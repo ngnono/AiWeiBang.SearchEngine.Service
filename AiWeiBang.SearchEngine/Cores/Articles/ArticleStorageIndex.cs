@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using AiWeiBang.SearchEngine.ApiClient;
 using AiWeiBang.SearchEngine.Contract;
 using AiWeiBang.SearchEngine.Contract.Models;
@@ -114,6 +115,7 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
                 parts = fieldValues
             };
 
+            Log.Info(String.Format("articleId:{0},parts:{1}", id.ToString(CultureInfo.InvariantCulture), fieldValues.ToJson()));
             var actual = RestClient.Post<dynamic, Result<dynamic>>(itemUpdatePartUrl, body);
 
             if (actual == null)
