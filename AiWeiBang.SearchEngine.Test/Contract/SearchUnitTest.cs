@@ -6,6 +6,7 @@ using AiWeiBang.SearchEngine.ApiClient;
 using AiWeiBang.SearchEngine.Contract;
 using AiWeiBang.SearchEngine.Contract.Models;
 using AiWeiBang.SearchEngine.Cores;
+using AiWeiBang.SearchEngine.Cores.Articles;
 using NUnit.Framework;
 
 namespace AiWeiBang.SearchEngine.Test.Contract
@@ -581,7 +582,72 @@ namespace AiWeiBang.SearchEngine.Test.Contract
 
 
         }
-    
-    
+
+        /// <summary>
+        /// 获取 最后文章的ID  by remote
+        /// </summary>
+        /// <returns></returns>
+        private ArticleModel GetLastArticle()
+        {
+            var _articleStorageIndex = new ArticleStorageIndex();
+            var query = new Query
+            {
+                From = 0,
+                Size = 1,
+                Sort = new List<Sort>
+                {
+                    new Sort
+                    {
+                        FieldName = ContantFields.ArticleId,
+                        Params =  "desc"
+                    }
+                },
+                IncludeFields = new List<string>
+                {
+                    ContantFields.ArticleId
+                }
+            };
+
+            var paging = _articleStorageIndex.GetList(query);
+
+            if (paging == null)
+            {
+                return null;
+            }
+
+            if (paging.Datas == null || paging.Datas.Count == 0)
+            {
+                return null;
+            }
+
+            return paging.Datas[0];
+        }
+
+        [Test]
+        public void T()
+        {
+            var filter = new ArticleFilter(0, 200);
+            int id;
+            int? articleId = null;
+            if (articleId == null)
+            {
+                var d = GetLastArticle();
+                id = d == null ? 0 : d.ArticleID;
+            }
+            else
+            {
+                id = articleId.Value;
+            }
+
+            if (filter.ArticleIdRange == null)
+            {
+                filter.ArticleIdRange = new SqlRange<int?>();
+            }
+
+            filter.ArticleIdRange.Gt = id;
+
+ 
+            Assert.NotNull(filter);
+        }
     }
 }

@@ -770,6 +770,7 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
             {
                 var d = GetLastArticle();
                 id = d == null ? 0 : d.ArticleID;
+                Log.Info(String.Format("lastArticles{0}", id));
             }
             else
             {
