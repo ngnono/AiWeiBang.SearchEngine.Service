@@ -1,4 +1,5 @@
-﻿using AiWeiBang.SearchEngine.Cores.Articles;
+﻿using System;
+using AiWeiBang.SearchEngine.Cores.Articles;
 using System.Collections.Generic;
 using System.Configuration;
 
@@ -21,8 +22,15 @@ namespace AiWeiBang.SearchEngine.Service.Console
                 };
 
             System.Console.WriteLine("run....");
-            t.TaskIncrementBuild(p);
-            System.Console.WriteLine("run ok....");
+            try
+            {
+                t.TaskIncrementBuild(p);
+                System.Console.WriteLine("run ok....");
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
 
             System.Console.ReadLine();
         }

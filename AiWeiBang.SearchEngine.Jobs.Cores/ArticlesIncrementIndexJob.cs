@@ -58,4 +58,31 @@ namespace AiWeiBang.SearchEngine.Jobs.Cores
             _articleIndex.TaskIncrementBuild(context.MergedJobDataMap);
         }
     }
+
+    /// <summary>
+    /// 更新JOB
+    /// </summary>
+    [DisallowConcurrentExecution]
+    public class UpdateArticlesTaskIncrementIndexJob : BaseIndexJob, IJob
+    {
+        private readonly static ILog Log = LogManager.GetLogger(typeof(UpdateArticlesTaskIncrementIndexJob));
+        private readonly IArticleIndex _articleIndex;
+
+        public UpdateArticlesTaskIncrementIndexJob()
+            : this(new ArticleIndex(new ArticleStorageIndex()))
+        {
+        }
+
+        public UpdateArticlesTaskIncrementIndexJob(IArticleIndex articleIndex)
+        {
+            Log.Info(".ctor");
+            _articleIndex = articleIndex;
+        }
+
+        public void Execute(IJobExecutionContext context)
+        {
+            Log.Info(String.Format("Execute.context:{0}", context));
+            _articleIndex.TaskIncrement4UpdateArticles(context.MergedJobDataMap);
+        }
+    }
 }

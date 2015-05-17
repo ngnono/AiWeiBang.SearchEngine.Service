@@ -626,6 +626,21 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
             Log.Fatal(String.Format("{0}~{1}执行完毕", min, max));
         }
 
+        public void TaskIncrement4UpdateArticles(IDictionary<string, object> args)
+        {
+            /**
+             * 0.开始
+             * 1.获取 最大的 articleID
+             * 2.根据ARGS 拿到 UPDATE 启示 时间点 
+             * 3.获取最后 UPDATE 时间 记录
+             * 4.已最大时间点 开始从数据库 提取数据
+             * 5.POST 数据到ES
+             * 6.记录日志到LOG
+             * 7.build完成后 记录JOB 开始时间点到 JOB记录中
+             * 8.完成
+             */
+        }
+
         #region  methods
 
         /// <summary>

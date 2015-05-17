@@ -13,5 +13,11 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
         /// </summary>
         /// <param name="args"></param>
         void TaskIncrementBuild(IDictionary<string, object> args);
+
+        /// <summary>
+        /// 更新任务
+        /// </summary>
+        /// <param name="args"></param>
+        void TaskIncrement4UpdateArticles(IDictionary<string, object> args);
     }
 }
