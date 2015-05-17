@@ -159,7 +159,7 @@
     <Compile Include="Models\WxUserExt.cs" />
     <Compile Include="Models\WxUserManage.cs" />
     <Compile Include="Models\WxUserRecommend.cs" />
-    <Compile Include="Partial\WechatMsgContent01Context.cs" />
+    <Compile Include="Partial\Models\WechatMsgContent01Context.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
