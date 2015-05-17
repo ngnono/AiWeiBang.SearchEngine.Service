@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
+using AiWeiBang.SearchEngine.ApiClient;
 using AiWeiBang.SearchEngine.Contract;
 using AiWeiBang.SearchEngine.Contract.Models;
 using AiWeiBang.SearchEngine.Data.Models;
 using AiWeiBang.SearchEngine.Dtos;
+using AiWeiBang.SearchEngine.Extensions;
 using LinqKit;
 using log4net;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace AiWeiBang.SearchEngine.Cores.Articles
 {
@@ -17,6 +21,7 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
         private readonly int _intervalCount = ConfigManager.GetDefaultArticleSelectSize;
         private readonly IArticleStorageIndex _articleStorageIndex;
         private readonly static ILog Log = LogManager.GetLogger(typeof(ArticleIndex));
+        private readonly int _article_Num_DetailTake = ConfigManager.GetDefaultArticleNumDetailsSize;
 
         public ArticleIndex(IArticleStorageIndex storageIndex)
         {
@@ -573,7 +578,7 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
             if (args == null)
             {
                 //根据 ARTICID run
-                
+
                 filter = GetFilterByLastArticleId(null);
             }
             else
@@ -630,18 +635,120 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
         {
             /**
              * 0.开始
-             * 1.获取 最大的 articleID
-             * 2.根据ARGS 拿到 UPDATE 启示 时间点 
-             * 3.获取最后 UPDATE 时间 记录
-             * 4.已最大时间点 开始从数据库 提取数据
-             * 5.POST 数据到ES
-             * 6.记录日志到LOG
-             * 7.build完成后 记录JOB 开始时间点到 JOB记录中
-             * 8.完成
+             * 1.获取 最大的 DetailID 为空则为0
+             * 2.获取数据库记录
+             * 3.POST 数据到ES
+             * 4.记录日志到LOG
+             * 5.build完成后 记录JOB 开始时间点到 JOB记录中
+             * 6.完成
              */
+
+            var model = GetLastJobHistoryContextModel("job_article_num_update");
+
+            if (model == null)
+            {
+                throw new NullReferenceException("model");
+            }
+
+            if (model.Context == null)
+            {
+                throw new NullReferenceException("model.Context");
+            }
+
+            var context = model.Context.FromJson<ArticleNumDetailJobHistory>();
+
+            var details = GetArticleNumDetails(context);
+
+            if (details == null || details.Count == 0)
+            {
+                Log.Info(String.Format("上下文{0}没有找到记录", model.Context.ToJson()));
+                return;
+            }
+
+            var maxDetailId = details.Max(v => v.DetailID);
+            SaveArticleNums(details);
+
+            context.DetailId = maxDetailId;
+            model.Context = context.ToJson();
+            model.UpdateDateTime = new DateTime();
+
+            _articleStorageIndex.SaveJobHistoryContextModel(model);
+
         }
 
         #region  methods
+
+
+        private JobHistoryContextModel GetLastJobHistoryContextModel(string id)
+        {
+            var model = _articleStorageIndex.GetJobHistoryContextModelItem(id);
+            if (model == null)
+            {
+                Log.Info(String.Format("job_context is null"));
+                var c = new ArticleNumDetailJobHistory
+                {
+                    DetailId = 0
+                };
+
+                model = new JobHistoryContextModel
+                {
+                    Id = id,
+                    UpdateDateTime = DateTime.Now,
+                    Context = c.ToJson(),
+                    Description = "job_history_article_num"
+                };
+            }
+            return model;
+        }
+
+        private List<Article_Num_Detail> GetArticleNumDetails(ArticleNumDetailJobHistory context)
+        {
+            if (context == null)
+            {
+                throw new NullReferenceException("context is null");
+            }
+
+            using (var db = new CrawlStatisticsContext())
+            {
+                var details = db.Article_Num_Detail.Where(v => v.DetailID > context.DetailId);
+
+                var grs = from detail in details
+                          group detail by detail.ArticleID
+                              into g
+                              select new
+                              {
+                                  g.Key,
+                                  MaxDetailID = g.Max(v => v.DetailID)
+                              };
+
+                grs = grs.OrderBy(v => v.MaxDetailID).Take(_article_Num_DetailTake);
+
+                var sql = from detail in details
+                          join gr in grs on detail.DetailID equals gr.MaxDetailID
+                          select detail;
+
+                return sql.ToList();
+            }
+        }
+
+        private void SaveArticleNums(List<Article_Num_Detail> details)
+        {
+            if (details == null)
+            {
+                throw new ArgumentNullException("details");
+            }
+
+            foreach (var item in details)
+            {
+                var parts = new Dictionary<string, object>
+                {
+                    {ContantFields.ReadNum, item.ReadNum.ToString(CultureInfo.InvariantCulture)},
+                    {ContantFields.LikeNum, item.LikeNum.ToString(CultureInfo.InvariantCulture)}
+                };
+
+                _articleStorageIndex.UpdatePartArticle(item.ArticleID, parts);
+            }
+        }
 
         /// <summary>
         ///  获取文章范围内的查询串  

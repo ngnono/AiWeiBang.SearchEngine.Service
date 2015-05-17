@@ -61,6 +61,7 @@
     <Compile Include="Models\Article_Ext.cs" />
     <Compile Include="Models\Article_Keyword.cs" />
     <Compile Include="Models\Article_Num.cs" />
+    <Compile Include="Models\Article_Num_Detail.cs" />
     <Compile Include="Models\Article_Pop.cs" />
     <Compile Include="Models\Article_PopBlack.cs" />
     <Compile Include="Models\Article_Recommend.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Models\Article_Temp.cs" />
     <Compile Include="Models\CrawlClient.cs" />
     <Compile Include="Models\CrawlMap.cs" />
+    <Compile Include="Models\CrawlStatisticsContext.cs" />
     <Compile Include="Models\CrawlTime.cs" />
     <Compile Include="Models\CrawlUrl.cs" />
     <Compile Include="Models\CredentialMail.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="Models\Mapping\Article_ExtMap.cs" />
     <Compile Include="Models\Mapping\Article_KeywordMap.cs" />
     <Compile Include="Models\Mapping\Article_NumMap.cs" />
+    <Compile Include="Models\Mapping\Article_Num_DetailMap.cs" />
     <Compile Include="Models\Mapping\Article_PopBlackMap.cs" />
     <Compile Include="Models\Mapping\Article_PopMap.cs" />
     <Compile Include="Models\Mapping\Article_RecommendMap.cs" />

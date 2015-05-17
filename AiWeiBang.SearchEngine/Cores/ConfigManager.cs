@@ -36,5 +36,21 @@ namespace AiWeiBang.SearchEngine.Cores
                 return Int32.Parse(ConfigurationManager.AppSettings["db.article.select.size"]);
             }
         }
+
+        public static string GetArticleJobHistoryContextApiAddress
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["searchEngine.domain.articleJobHistories"];
+            }
+        }
+
+        public static int GetDefaultArticleNumDetailsSize
+        {
+            get
+            {
+                return Int32.Parse(ConfigurationManager.AppSettings["db.articleNumDetails.select.size"]);
+            }
+        }
     }
 }

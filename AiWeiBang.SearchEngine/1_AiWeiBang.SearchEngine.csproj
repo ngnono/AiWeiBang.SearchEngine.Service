@@ -81,6 +81,8 @@
     <Compile Include="Cores\CreatedListResult.cs" />
     <Compile Include="Cores\Articles\IArticleIndex.cs" />
     <Compile Include="Cores\Articles\IArticleStorageIndex.cs" />
+    <Compile Include="Dtos\ArticleNumDetailJobHistory.cs" />
+    <Compile Include="Dtos\JobHistoryContextModel.cs" />
     <Compile Include="Extensions\JsonDotNetExtension.cs" />
     <Compile Include="Cores\SqlRange.cs" />
     <Compile Include="Dtos\ArticleContentDto.cs" />

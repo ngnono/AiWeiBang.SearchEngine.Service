@@ -14,6 +14,7 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
         private readonly string _articleIndex = ConfigManager.ArticleApiAddress;
         private readonly string _articleColumnIndex = ConfigManager.ArticleColumnApiAddress;
         private readonly string _articleColumnIndexBulk = String.Format("{0}bulk", ConfigManager.ArticleColumnApiAddress);
+        private readonly string _articleJobContextIndex = ConfigManager.ArticleColumnApiAddress;
 
         private readonly string _search;
 
@@ -68,6 +69,61 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
             }
 
             return null;
+        }
+
+        public JobHistoryContextModel GetJobHistoryContextModelItem(string id)
+        {
+            var itemUrl = String.Format("{0}{1}", _articleJobContextIndex, id);
+            var actual = RestClient.GetItem<Result<JobHistoryContextModel>>(itemUrl);
+
+            if (actual != null && actual.Status && actual.StatusCode == 200)
+            {
+                return actual.Data;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public JobHistoryContextModel SaveJobHistoryContextModel(JobHistoryContextModel model)
+        {
+            //var itemUrl = String.Format("{0}{1}", _articleJobContextIndex);
+
+            var actual = RestClient.Post<JobHistoryContextModel, Result<JobHistoryContextModel>>(_articleJobContextIndex, model);
+
+            //create
+            if (actual != null && actual.Status && actual.StatusCode == 201)
+            {
+                return actual.Data;
+            }
+            else
+            {
+                Log.Error(actual);
+                return null;
+            }
+        }
+
+
+        public bool UpdatePartArticle(int id, Dictionary<string, object> fieldValues)
+        {
+            var itemUpdatePartUrl = String.Format("{0}{1}/partial", _articleIndex, id);
+
+            var body = new
+            {
+                parts = fieldValues
+            };
+
+            var actual = RestClient.Post<dynamic, Result<dynamic>>(itemUpdatePartUrl, body);
+
+            if (actual == null)
+            {
+                return false;
+            }
+
+            Log.Debug(actual.ToJson());
+
+            return actual.Status;
         }
     }
 }
