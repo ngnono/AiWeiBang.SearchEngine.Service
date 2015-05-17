@@ -649,7 +649,7 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
 
             context.DetailId = maxDetailId;
             model.Context = context.ToJson();
-            model.UpdateDateTime = new DateTime();
+            model.UpdateDateTime = DateTime.Now;
 
             _articleStorageIndex.SaveJobHistoryContextModel(model);
 
