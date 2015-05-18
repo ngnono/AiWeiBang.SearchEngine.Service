@@ -13,8 +13,8 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
     public class ArticleStorageIndex : IArticleStorageIndex
     {
         private readonly string _articleIndex = ConfigManager.ArticleApiAddress;
-        private readonly string _articleColumnIndex = ConfigManager.ArticleColumnApiAddress;
-        //private readonly string _articleColumnIndexBulk = String.Format("{0}bulk", ConfigManager.ArticleColumnApiAddress);
+        //private readonly string _articleColumnIndex = ConfigManager.ArticleColumnApiAddress;
+        private readonly string _articleColumnIndexBulk = String.Format("{0}bulk", ConfigManager.ArticleColumnApiAddress);
         private readonly string _articleJobContextIndex = ConfigManager.GetArticleJobHistoryContextApiAddress;
 
         private readonly string _search;
@@ -47,9 +47,9 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
                 return;
             }
 
-            Log.Info(String.Format("save(articleColumnDtos:{0})", articleColumnDtos.ToJson()));
-            var rst = RestClient.Post<List<ArticleColumnModel>, dynamic>(_articleColumnIndex, articleColumnDtos);
-            Log.Info(String.Format("save(articleColumnDtos.rst:{0})", rst));
+            Log.Debug(String.Format("save(articleColumnDtos:{0})", articleColumnDtos.ToJson()));
+            var rst = RestClient.Post<List<ArticleColumnModel>, object>(_articleColumnIndexBulk, articleColumnDtos);
+            Log.Debug(String.Format("save(articleColumnDtos.rst:{0})", rst.ToJson()));
         }
 
         public PagerInfo<ArticleModel> GetList(Query query)

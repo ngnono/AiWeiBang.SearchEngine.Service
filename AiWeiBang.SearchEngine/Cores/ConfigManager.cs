@@ -25,7 +25,7 @@ namespace AiWeiBang.SearchEngine.Cores
         {
             get
             {
-                return ConfigurationManager.AppSettings["searchEngine.domain.articleJobHistories"];
+                return ConfigurationManager.AppSettings["searchEngine.domain.articleColumns"];
             }
         }
 
