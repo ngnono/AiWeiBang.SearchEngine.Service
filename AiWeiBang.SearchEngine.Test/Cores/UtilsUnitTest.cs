@@ -13,40 +13,56 @@ namespace AiWeiBang.SearchEngine.Test.Cores
         [Test]
         public void TestMethod1([Range(99, 100, 1)]int id)
         {
-            var actual = Utils.GetArticleContentDbTable(id, 100);
-            const string expected = "[WechatMsg_Content01].[dbo].[Article_Content]";
+            var actual = Utils.GetArticleContentDbConnectionStringName(new List<int>() { id }, 100).FirstOrDefault();
+            const string expected = "WechatMsg_Content01Context";
             Assert.AreEqual(actual, expected, String.Format("actual:{0},equal expected:{1}", actual, expected));
         }
 
         [Test]
         public void TestMethod2([Range(1, 100, 1)]int id)
         {
-            var actual = Utils.GetArticleContentDbTable(id, 100);
-            const string expected = "[WechatMsg_Content01].[dbo].[Article_Content]";
+            var actual = Utils.GetArticleContentDbConnectionStringName(new List<int>() { id }, 100).FirstOrDefault();
+            const string expected = "WechatMsg_Content01Context";
             Assert.AreEqual(actual, expected, String.Format("actual:{0},equal expected:{1}", actual, expected));
         }
 
         [Test]
         public void TestMethod3([Range(201, 300, 1)]int id)
         {
-            var actual = Utils.GetArticleContentDbTable(id, 100);
-            const string expected = "[WechatMsg_Content03].[dbo].[Article_Content]";
+            var actual = Utils.GetArticleContentDbConnectionStringName(new List<int>() { id }, 100).FirstOrDefault();
+            const string expected = "WechatMsg_Content03Context";
             Assert.AreEqual(actual, expected, String.Format("actual:{0},equal expected:{1}", actual, expected));
         }
 
         [Test]
         public void TestMethod4([Range(1201, 1300, 1)]int id)
         {
-            var actual = Utils.GetArticleContentDbTable(id, 100);
-            const string expected = "[WechatMsg_Content13].[dbo].[Article_Content]";
+            var actual = Utils.GetArticleContentDbConnectionStringName(new List<int>() { id }, 100).FirstOrDefault();
+            const string expected = "WechatMsg_Content13Context";
             Assert.AreEqual(actual, expected, String.Format("actual:{0},equal expected:{1}", actual, expected));
         }
 
         [Test]
         public void TestMethod5([Range(2010, 2020, 1)]int id)
         {
-            var actual = Utils.GetArticleContentDbTable(id, 100);
-            const string expected = "[WechatMsg_Content21].[dbo].[Article_Content]";
+            var actual = Utils.GetArticleContentDbConnectionStringName(new List<int>() { id }, 100).FirstOrDefault();
+            const string expected = "WechatMsg_Content21Context";
+            Assert.AreEqual(actual, expected, String.Format("actual:{0},equal expected:{1}", actual, expected));
+        }
+
+        [Test]
+        public void TestMethod3001([Range(3001, 3100, 1)]int id)
+        {
+            var actual = Utils.GetArticleContentDbConnectionStringName(new List<int>() { id }, 100).FirstOrDefault();
+            const string expected = "WechatMsg_Content22Context";
+            Assert.AreEqual(actual, expected, String.Format("actual:{0},equal expected:{1}", actual, expected));
+        }
+
+        [Test]
+        public void TestMethod3000([Values(3000)]int id)
+        {
+            var actual = Utils.GetArticleContentDbConnectionStringName(new List<int>() { id }, 100).FirstOrDefault();
+            const string expected = "WechatMsg_Content21Context";
             Assert.AreEqual(actual, expected, String.Format("actual:{0},equal expected:{1}", actual, expected));
         }
 

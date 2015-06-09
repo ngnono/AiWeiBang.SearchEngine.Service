@@ -7,39 +7,41 @@ namespace AiWeiBang.SearchEngine
 {
     public static class Utils
     {
-        /// <summary>
-        /// articleId 每100W了一个库 100W时会在UP库中
-        /// articlesId 小于2000W 时 CONTTENT
-        /// 
-        /// </summary>
-        /// <param name="articleId"></param>
-        /// <param name="interval"></param>
-        /// <returns></returns>
-        public static string GetArticleContentDbTable(int articleId, double interval = 1000000.0)
-        {
-            if (articleId < 1)
-            {
-                return "";
-            }
-            else
-            {
-                //处理 当正好=interval
-                articleId = articleId - 1;
-            }
+        ///// <summary>
+        ///// articleId 每100W了一个库 100W时会在UP库中
+        ///// articlesId 小于2000W 时 CONTTENT
+        ///// 
+        ///// </summary>
+        ///// <param name="articleId"></param>
+        ///// <param name="interval"></param>
+        ///// <returns></returns>
+        //public static string GetArticleContentDbTable(int articleId, double interval = 1000000.0)
+        //{
+        //    if (articleId < 1)
+        //    {
+        //        return "";
+        //    }
+        //    else
+        //    {
+        //        //处理 当正好=interval
+        //        articleId = articleId - 1;
+        //    }
 
-            var d = Convert.ToInt32(Math.Floor((articleId / interval) + 1.0));
-            if (d < 10)
-            {
-                return String.Format("[WechatMsg_Content0{0}].[dbo].[Article_Content]",
-                    d.ToString(CultureInfo.InvariantCulture));
-            }
+        //    var d = Convert.ToInt32(Math.Floor((articleId / interval) + 1.0));
+        //    if (d < 10)
+        //    {
+        //        return String.Format("[WechatMsg_Content0{0}].[dbo].[Article_Content]",
+        //            d.ToString(CultureInfo.InvariantCulture));
+        //    }
 
-            return String.Format("[WechatMsg_Content{0}].[dbo].[Article_Content]",
-                d.ToString(CultureInfo.InvariantCulture));
-        }
+        //    return String.Format("[WechatMsg_Content{0}].[dbo].[Article_Content]",
+        //        d.ToString(CultureInfo.InvariantCulture));
+        //}
 
         /// <summary>
         ///  返回数据库连接串NAME articleId 每100W了一个库 100W时会在UP库中
+        ///  3000W
+        ///  2000W 问题
         /// </summary>
         /// <param name="articleId"></param>
         /// <param name="interval"></param>
@@ -61,11 +63,19 @@ namespace AiWeiBang.SearchEngine
             {
                 return String.Format("WechatMsg_Content0{0}Context", d.ToString(CultureInfo.InvariantCulture));
             }
-            if (d > 21)
+            if (d > 21 && d < 30)
             {
                 d = 21;
             }
-
+            else
+            {
+                //大于3000W时要使用22库
+                if (d >= 30)
+                {
+                    d = 22;
+                }
+            }
+           
             return String.Format("WechatMsg_Content{0}Context", d.ToString(CultureInfo.InvariantCulture));
         }
 
