@@ -30,7 +30,7 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
             _articleStorageIndex = storageIndex;
         }
 
-        public static TResult NoLockInvokeDB<TResult>(Func<TResult> func)
+        public static void NoLockInvokeDB(Action action)
         {
             var transactionOptions = new System.Transactions.TransactionOptions();
             transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
@@ -38,7 +38,7 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
             {
                 try
                 {
-                    return func();
+                    action();
                 }
                 finally
                 {
@@ -176,7 +176,7 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
         public PagerInfo<ArticleModel> GetArticles(ArticleFilter filter)
         {
             Expression<Func<Article, bool>> articlesFilter = Filter(filter);
-            PagerInfo<ArticleModel> articleResult;
+            PagerInfo<ArticleModel> articleResult = null;
             var indexStartDateTime = DateTime.Now;
             Log.Debug(String.Format("getArticles.start.dt{0}", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")));
 
@@ -187,51 +187,54 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
 
             #region read db
 
-            using (var db = new WechatMsgContext())
-            {
-                var timeout = ConfigManager.GetDatabaseCommandTimeout;
-                if (timeout != null)
+            NoLockInvokeDB(() =>
+{
+    using (var db = new WechatMsgContext())
+    {
+        var timeout = ConfigManager.GetDatabaseCommandTimeout;
+        if (timeout != null)
+        {
+            db.Database.CommandTimeout = timeout;
+        }
+
+        var articles = db.Articles;
+        var articlesNums = db.Article_Num;
+
+        var q = from article in articles.AsExpandable().Where(articlesFilter)
+                join articlesNum in articlesNums on article.ArticleID equals articlesNum.ArticleID into leftTmp1
+                from nums in leftTmp1.DefaultIfEmpty()
+
+                select new
                 {
-                    db.Database.CommandTimeout = timeout;
-                }
-
-                var articles = db.Articles;
-                var articlesNums = db.Article_Num;
-
-                var q = from article in articles.AsExpandable().Where(articlesFilter)
-                        join articlesNum in articlesNums on article.ArticleID equals articlesNum.ArticleID into leftTmp1
-                        from nums in leftTmp1.DefaultIfEmpty()
-
-                        select new
-                        {
-                            article,
-                            nums
-                        };
-
-                var totalCount = q.Count();
-
-                //TODO: 写死了排序方式
-                var datas = q.OrderBy(v => v.article.ArticleID).Skip(filter.SkipCount).Take(filter.PageSize).ToList();
-
-                articleResult = new PagerInfo<ArticleModel>(filter, totalCount)
-                {
-                    Datas = new List<ArticleModel>(datas.Count)
+                    article,
+                    nums
                 };
 
-                foreach (var data in datas)
-                {
-                    var d = AutoMapper.Mapper.Map<Article, ArticleModel>(data.article);
-                    if (data.nums != null)
-                    {
-                        d.NumUpdateTime = data.nums.UpdateTime;
-                        d.LikNum = data.nums.LikNum;
-                        d.ReadNum = data.nums.ReadNum;
-                    }
-                    d.LastIndexDateTime = indexStartDateTime;
+        var totalCount = q.Count();
 
-                    articleResult.Datas.Add(d);
-                }
+        //TODO: 写死了排序方式
+        var datas = q.OrderBy(v => v.article.ArticleID).Skip(filter.SkipCount).Take(filter.PageSize).ToList();
+
+        articleResult = new PagerInfo<ArticleModel>(filter, totalCount)
+        {
+            Datas = new List<ArticleModel>(datas.Count)
+        };
+
+        foreach (var data in datas)
+        {
+            var d = AutoMapper.Mapper.Map<Article, ArticleModel>(data.article);
+            if (data.nums != null)
+            {
+                d.NumUpdateTime = data.nums.UpdateTime;
+                d.LikNum = data.nums.LikNum;
+                d.ReadNum = data.nums.ReadNum;
             }
+            d.LastIndexDateTime = indexStartDateTime;
+
+            articleResult.Datas.Add(d);
+        }
+    }
+});
 
             #endregion
 
@@ -253,6 +256,12 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
 
             using (var db = new WechatMsgContext())
             {
+                var timeout = ConfigManager.GetDatabaseCommandTimeout;
+                if (timeout != null)
+                {
+                    db.Database.CommandTimeout = timeout;
+                }
+
                 var articles = db.Articles;
                 var articlesNums = db.Article_Num;
 
@@ -309,6 +318,12 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
 
             using (var db = new WeiBangAccountContext())
             {
+                var timeout = ConfigManager.GetDatabaseCommandTimeout;
+                if (timeout != null)
+                {
+                    db.Database.CommandTimeout = timeout;
+                }
+
                 var msColumnArticles = db.MsColumnArticles;
                 var msColumns = db.MsColumns;
 
@@ -348,6 +363,12 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
             {
                 using (var db = new WechatMsg_Content01Context(conncetString))
                 {
+                    var timeout = ConfigManager.GetDatabaseCommandTimeout;
+                    if (timeout != null)
+                    {
+                        db.Database.CommandTimeout = timeout;
+                    }
+
                     var articleContents = db.Article_Content;
 
                     var q = from content in articleContents.Where(v => v.ArticleID >= minId && v.ArticleID <= maxId)
