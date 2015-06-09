@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Transactions;
 using AiWeiBang.SearchEngine.ApiClient;
 using AiWeiBang.SearchEngine.Contract;
 using AiWeiBang.SearchEngine.Contract.Models;
@@ -28,6 +29,24 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
             //_intervalCount = intervalCount;
             _articleStorageIndex = storageIndex;
         }
+
+        public static TResult NoLockInvokeDB<TResult>(Func<TResult> func)
+        {
+            var transactionOptions = new System.Transactions.TransactionOptions();
+            transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
+            using (var transactionScope = new System.Transactions.TransactionScope(System.Transactions.TransactionScopeOption.Required, transactionOptions))
+            {
+                try
+                {
+                    return func();
+                }
+                finally
+                {
+                    transactionScope.Complete();
+                }
+            }
+        }
+
 
         private static Expression<Func<Article, bool>> Filter(ArticleFilter filter)
         {
@@ -161,10 +180,21 @@ namespace AiWeiBang.SearchEngine.Cores.Articles
             var indexStartDateTime = DateTime.Now;
             Log.Debug(String.Format("getArticles.start.dt{0}", DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")));
 
+
+            var transactionOptions = new TransactionOptions();
+            transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
+
+
             #region read db
 
             using (var db = new WechatMsgContext())
             {
+                var timeout = ConfigManager.GetDatabaseCommandTimeout;
+                if (timeout != null)
+                {
+                    db.Database.CommandTimeout = timeout;
+                }
+
                 var articles = db.Articles;
                 var articlesNums = db.Article_Num;
 

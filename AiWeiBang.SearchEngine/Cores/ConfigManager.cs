@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Linq;
 
 namespace AiWeiBang.SearchEngine.Cores
 {
@@ -50,6 +51,19 @@ namespace AiWeiBang.SearchEngine.Cores
             get
             {
                 return Int32.Parse(ConfigurationManager.AppSettings["db.articleNumDetails.select.size"]);
+            }
+        }
+
+        public static int? GetDatabaseCommandTimeout
+        {
+            get
+            {
+                if (ConfigurationManager.AppSettings.AllKeys.Contains("db.command.timeout"))
+                {
+                    return Int32.Parse(ConfigurationManager.AppSettings["db.command.timeout"]);
+                }
+
+                return null;
             }
         }
     }
