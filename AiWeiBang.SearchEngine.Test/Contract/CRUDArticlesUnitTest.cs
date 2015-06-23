@@ -94,20 +94,22 @@ namespace AiWeiBang.SearchEngine.Test.Contract
         /// 部分更新
         /// </summary>
         [Test]
-        public void UpdatePartItem()
+        public void UpdatePartItem([Values(592)]int articleId)
         {
             //var article = GetRandomArticle();
 
-            var itemUrl = String.Format("{0}{1}", _item, 585);
-            var itemUpdatePartUrl = String.Format("{0}{1}/partial", _item, 585);
+            var itemUrl = String.Format("{0}{1}", _item, articleId);
+            var itemUpdatePartUrl = String.Format("{0}{1}/partial", _item, articleId);
             var item = RestClient.GetItem<Result<ArticleModel>>(itemUrl);
 
-            var e = 200;
+            var e = 201;
+            var l = 101;
 
             var parts = new Dictionary<string, object>();
             //目前只 支持 单字段更新，后续会加上多字段更新
             //更新 read_num字段
             parts.Add(ContantFields.ReadNum, e);
+            parts.Add(ContantFields.LikeNum, l);
             var body = new
             {
                 parts = parts
