@@ -59,24 +59,51 @@ namespace AiWeiBang.SearchEngine
             }
 
             var d = Convert.ToInt32(Math.Floor((articleId / interval) + 1.0));
+
             if (d < 10)
             {
-                return String.Format("WechatMsg_Content0{0}Context", d.ToString(CultureInfo.InvariantCulture));
+                return GetContentString(d);
             }
-            if (d > 21 && d < 30)
+            if (d > 21 && d <= 30)
             {
                 d = 21;
+
+                return GetContentString(d);
+            }
+
+            //大于3000W时要使用22库
+            if (d >= 30&& d<=40)
+            {
+                d = 22;
+
+                return GetContentString(d);
+            }
+
+            if (d >= 40)
+            {
+                d = 23;
+
+                return GetContentString(d);
+            }
+
+            return GetContentString(d); 
+        }
+
+        /// <summary>
+        /// 获取 EF 连接串
+        /// </summary>
+        /// <param name="contentNum"></param>
+        /// <returns></returns>
+        private static string GetContentString(int contentNum)
+        {
+            if (contentNum < 10)
+            {
+                return String.Format("WechatMsg_Content0{0}Context", contentNum.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
-                //大于3000W时要使用22库
-                if (d >= 30)
-                {
-                    d = 22;
-                }
+                return String.Format("WechatMsg_Content{0}Context", contentNum.ToString(CultureInfo.InvariantCulture));
             }
-           
-            return String.Format("WechatMsg_Content{0}Context", d.ToString(CultureInfo.InvariantCulture));
         }
 
         /// <summary>

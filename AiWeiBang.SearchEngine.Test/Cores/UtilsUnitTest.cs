@@ -66,6 +66,31 @@ namespace AiWeiBang.SearchEngine.Test.Cores
             Assert.AreEqual(actual, expected, String.Format("actual:{0},equal expected:{1}", actual, expected));
         }
 
+
+        [Test]
+        public void TestMethod4001([Range(4001, 4100, 1)]int id)
+        {
+            var actual = Utils.GetArticleContentDbConnectionStringName(new List<int>() { id }, 100).FirstOrDefault();
+            const string expected = "WechatMsg_Content23Context";
+            Assert.AreEqual(actual, expected, String.Format("actual:{0},equal expected:{1}", actual, expected));
+        }
+
+        [Test]
+        public void TestMethod4950([Range(4950, 5000, 1)]int id)
+        {
+            var actual = Utils.GetArticleContentDbConnectionStringName(new List<int>() { id }, 100).FirstOrDefault();
+            const string expected = "WechatMsg_Content23Context";
+            Assert.AreEqual(actual, expected, String.Format("actual:{0},equal expected:{1}", actual, expected));
+        }
+
+        [Test]
+        public void TestMethod4000([Values(4000)]int id)
+        {
+            var actual = Utils.GetArticleContentDbConnectionStringName(new List<int>() { id }, 100).FirstOrDefault();
+            const string expected = "WechatMsg_Content22Context";
+            Assert.AreEqual(actual, expected, String.Format("actual:{0},equal expected:{1}", actual, expected));
+        }
+
         [Test]
         public void Tt()
         {
