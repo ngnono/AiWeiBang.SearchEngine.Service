@@ -46,7 +46,7 @@ namespace AiWeiBang.SearchEngine
         /// <param name="articleId"></param>
         /// <param name="interval"></param>
         /// <returns>WechatMsg_Content01Context</returns>
-        private static string GetArticleContentDbConnectionStringName(int articleId, double interval = 1000000.0)
+        private static string GetArticleContentDbConnectionStringName(int articleId, double interval = 10000000.0)
         {
             if (articleId < 1)
             {
@@ -59,32 +59,6 @@ namespace AiWeiBang.SearchEngine
             }
 
             var d = Convert.ToInt32(Math.Floor((articleId / interval) + 1.0));
-
-            if (d < 10)
-            {
-                return GetContentString(d);
-            }
-            if (d > 21 && d <= 30)
-            {
-                d = 21;
-
-                return GetContentString(d);
-            }
-
-            //大于3000W时要使用22库
-            if (d >= 30&& d<=40)
-            {
-                d = 22;
-
-                return GetContentString(d);
-            }
-
-            if (d >= 40)
-            {
-                d = 23;
-
-                return GetContentString(d);
-            }
 
             return GetContentString(d); 
         }
@@ -107,13 +81,13 @@ namespace AiWeiBang.SearchEngine
         }
 
         /// <summary>
-        ///  返回数据库连接串NAME articleId 每100W了一个库 100W时会在UP库中
+        ///  返回数据库连接串NAME articleId 每1000W了一个库 1000W时会在UP库中
         /// </summary>
         /// <param name="articleIds"></param>
         /// <param name="interval"></param>
         /// <returns>WechatMsg_Content01Context</returns>
         public static IEnumerable<string> GetArticleContentDbConnectionStringName(List<int> articleIds,
-            double interval = 1000000.0)
+            double interval = 10000000.0)
         {
             if (articleIds == null || articleIds.Count == 0)
             {
